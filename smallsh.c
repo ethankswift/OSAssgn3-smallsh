@@ -1,5 +1,6 @@
 #include "string.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "unistd.h"
 
 //
@@ -48,7 +49,9 @@ void reader(){
 int main () {
 	int i = 0;
 	int exit = 0;
+	char buffer[512];
 
+	getcwd(buffer,512);
 //run reader to put the args in the global struct that holds the args
 	reader();
 
@@ -56,13 +59,18 @@ int main () {
 	if(strcmp(input.args[0],"exit") == 0){
 		return 0; //exits
 	} else if(strcmp(input.args[0],"cd") == 0 && input.args[1] == NULL ){
-		printf("changing to %s\n", getenv("HOME"));
 		chdir(getenv("HOME"));
+	} else if(strcmp(input.args[0],"cd") == 0 && input.args[1] != NULL ){
+		chdir(input.args[1]);
+	} else if(strcmp(input.args[0],"status") == 0){
+		printf("%d\n", exit);
+		fflush(stdout);
+	} else if(strcmp(input.args[0],"#") == 0 || input.args[0] == NULL){
+		//do nothing
 	}
-	
 
 
 //i'll do it again
 	while(main());
-	return exit;
+	return 0;
 }
